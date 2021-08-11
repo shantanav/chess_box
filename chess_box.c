@@ -15,5 +15,6 @@ int main(int argc, char** argv) {
 
     display_game(&game);
     puts(fen);
-    printf("Time taken: %f seconds.\n", ((double)t)/CLOCKS_PER_SEC);
+    puts("");
+    printf("Time taken to read/generate FEN: %f seconds.\n", ((double)t)/CLOCKS_PER_SEC);
 }

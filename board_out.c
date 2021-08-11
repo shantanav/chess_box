@@ -6,27 +6,12 @@
                              //  1    2    3    4    5    6     (but it's binary)
 const unsigned char pieces[] = {'P', 'N', 'B', 'R', 'Q', 'K'};
 
-void display_game(game_t* game) { 
-    unsigned int i, j;
-    unsigned char value = 0;
-    unsigned char print_val = 0;
-    
-    printf("White can castle kingside: %s\n", game->castling & 0b1000 ? "yes" : "no");
-    printf("White can castle queenside: %s\n", game->castling & 0b0100 ? "yes" : "no");
-    printf("Black can castle kingside: %s\n", game->castling & 0b0010 ? "yes" : "no");
-    printf("Black can castle queenside: %s\n", game->castling & 0b0001 ? "yes" : "no");
-
-    char move[2] = "00";
-    game->en_passant != 0 ? boardpos_to_pgnmove(game->en_passant, move) : 0xDEADBEEF;
-    printf("En passant target: %s\n", strcmp(move, "00") == 0 ? "None" : move);
-
-    printf("Halfmove ply: %d\n", game->halfmove_ply);
-    printf("Move number: %d\n\n", game->move_number);
-
-    // Actually display the board now. Use the `pieces` array to determine the 
-    // piece to be printed using the lower 3 bits of the value in the board.
-    // Determine if the piece is white or black using the MSB.
-    printf("%s to move\n", game->turn ? "White" : "Black");
+void display_board(game_t* game) {
+    uint8_t i, j;
+    uint8_t value = 0;
+    uint8_t print_val = 0;
+    puts("");
+    printf("    a b c d e f g h  \n");
     printf("  + - - - - - - - - +\n");
     for (i = 0; i < BOARD_HEIGHT; i++) {
         printf("%d | ", (8 - i));
@@ -42,15 +27,33 @@ void display_game(game_t* game) {
                 printf("%c ", print_val);
             }
         }
-        printf("|\n");
+        printf("| %d\n", (8 - i));
     }
     printf("  + - - - - - - - - +\n");
     printf("    a b c d e f g h  \n");
+    puts(""); 
+}
+
+void display_game(game_t* game) { 
+    printf("White can castle kingside: %s\n", game->castling & 0b1000 ? "yes" : "no");
+    printf("White can castle queenside: %s\n", game->castling & 0b0100 ? "yes" : "no");
+    printf("Black can castle kingside: %s\n", game->castling & 0b0010 ? "yes" : "no");
+    printf("Black can castle queenside: %s\n", game->castling & 0b0001 ? "yes" : "no");
+
+    char move[3] = "00\0";
+    if (game->en_passant != 0) boardpos_to_pgnmove(game->en_passant, move);
+    printf("En passant target: %s\n", strcmp(move, "00") == 0 ? "None" : move);
+
+    printf("Halfmove ply: %d\n", game->halfmove_ply);
+    printf("Move number: %d\n\n", game->move_number);
+    printf("%s to move\n", game->turn ? "White" : "Black");
+
+    display_board(game);
 }
 
 void game_to_fen(game_t* game, char* fen) {
-    unsigned int i, j, count = 0;
-    unsigned char value = 0;
+    uint8_t i, j, count = 0;
+    uint8_t value = 0;
     // Populate the board state using similar technique to how
     // it's displayed above
     for (i = 0; i < BOARD_HEIGHT; i++) {

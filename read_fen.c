@@ -62,11 +62,10 @@ void read_fen(game_t* game, char* fen) {
                                       // advance it to the next space
     }
     fen++; // Skip the space after the en passant target field
-    char number[3] = "000"; // Declare a field for the eventual number
+    char number[3]; // Declare a field for the eventual number
     int i = 0;
-    while (!isspace(*fen) && i < strlen(number)) { // Copy the ply into the number array
-        number[i++] = *fen++;
-    }
+    // Copy the ply into the number array
+    while (!isspace(*fen) && i < strlen(number)) number[i++] = *fen++;
     game->halfmove_ply = atoi(number); // Convert to an integer and store in game object
     fen++; // Skip the space after the ply field
     game->move_number = atoi(fen++); // Read the rest of the FEN, which contains the move number

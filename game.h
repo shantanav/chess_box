@@ -10,11 +10,15 @@
 #define FEN_STR_MAX_LEN     (TOTAL_SQUARES * 2) // This seemed appropriate 
                                                 // given my brief research
 
+#include <stdint.h>
+
 /**
  * game_t:
  * Structural representation of a game using it's FEN information
  *      board:          array representation of the board
  *      turn:           denote which player's turn it is
+ *                          Turn is 0: It's black's turn
+ *                          Turn is 1: It's white's turn
  *      castling:       denote the castling availability using 4 bits
  *                          If bit 3 is high: White can castle kingside
  *                          If bit 2 is high: White can castle queenside
@@ -26,17 +30,26 @@
  *      move_number:    current move number
  */
 typedef struct {
-    unsigned char board[TOTAL_SQUARES];
-    unsigned char turn;
-    unsigned char castling;
-    unsigned char en_passant;
-    unsigned int halfmove_ply;
-    unsigned int move_number;
+    uint8_t board[TOTAL_SQUARES];
+    uint8_t turn;
+    uint8_t castling;
+    uint8_t en_passant;
+    uint8_t halfmove_ply;
+    uint8_t move_number;
 } game_t;
 
 /**
  * display_board:
  * Print a human readable representation of the board
+ * to stdout.
+ * 
+ * @param game  The game to be printed
+ */
+extern void display_board(game_t* game);
+
+/**
+ * display_game:
+ * Print all the information about a game, including the board
  * to stdout.
  * 
  * @param game  The game to be printed
@@ -47,7 +60,7 @@ extern void display_game(game_t* game);
  * read_fen:
  * Read a FEN string into a board.
  * 
- * This isn't error handled and is expecting a largely 
+ * This isn't error handled and is expecting a completely
  * correct FEN string. Take pity on my code and don't give
  * it broken data please :)
  * 
@@ -85,8 +98,17 @@ extern int pgnmove_to_boardpos(char* pgn_move);
  * @param move      String to overwrite with the PGN format
  * 
  * @post            0 and 1 position of "move" parameter is 
- *                  populated with PGN move
+ *                  populated with PGN square
  */
 extern void boardpos_to_pgnmove(int board_pos, char* move);
+
+/**
+ * move_piece:
+ * Make the stated move on the board of the provided game
+ * 
+ * @param game      The game
+ * @param move      The move to make in PGN format.
+ */
+extern void move_piece(game_t game, char* move);
 
 #endif
