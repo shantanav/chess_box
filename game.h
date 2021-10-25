@@ -87,7 +87,7 @@ extern void game_to_fen(game_t* game, char* fen);
  * @param pgn_move  string containing the PGN move
  * @return          The integer board position
  */
-extern int pgnmove_to_boardpos(char* pgn_move);
+extern int pgn_to_boardpos(char* pgn_move);
 
 /**
  * boardpos_to_pgnmove:
@@ -100,7 +100,7 @@ extern int pgnmove_to_boardpos(char* pgn_move);
  * @post            0 and 1 position of "move" parameter is 
  *                  populated with PGN square
  */
-extern void boardpos_to_pgnmove(int board_pos, char* move);
+extern void boardpos_to_pgn(int board_pos, char* move);
 
 /**
  * move_piece:

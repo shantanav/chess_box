@@ -57,7 +57,7 @@ void read_fen(game_t* game, char* fen) {
     if (*fen == '-') {
         fen++; // If it's a dash then skip it
     } else {
-        game->en_passant = pgnmove_to_boardpos(fen); // Convert the move string to a board position value
+        game->en_passant = pgn_to_boardpos(fen); // Convert the move string to a board position value
         while (!isspace(*fen)) fen++; // Since the fen pointer is untouched in this scope, 
                                       // advance it to the next space
     }

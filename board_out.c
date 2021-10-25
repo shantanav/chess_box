@@ -41,7 +41,7 @@ void display_game(game_t* game) {
     printf("Black can castle queenside: %s\n", game->castling & 0b0001 ? "yes" : "no");
 
     char move[3] = "00\0";
-    if (game->en_passant != 0) boardpos_to_pgnmove(game->en_passant, move);
+    if (game->en_passant != 0) boardpos_to_pgn(game->en_passant, move);
     printf("En passant target: %s\n", strcmp(move, "00") == 0 ? "None" : move);
 
     printf("Halfmove ply: %d\n", game->halfmove_ply);
@@ -90,7 +90,7 @@ void game_to_fen(game_t* game, char* fen) {
     }
     *fen++ = ' '; // Add a space after castling availability
     // Set the en passant target square in the string
-    game->en_passant != 0 ? boardpos_to_pgnmove(game->en_passant, fen) : (*fen++ = '-');
+    game->en_passant != 0 ? boardpos_to_pgn(game->en_passant, fen) : (*fen++ = '-');
     while (isalnum(*fen)) fen++; // Since fen isn't modified locally, skip to end of the field
     *fen++ = ' '; // Add a space after en passant target square
     char ply[4]; // Create a local array for reading in the ply
